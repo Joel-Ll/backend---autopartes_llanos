@@ -26,7 +26,7 @@ export class AuthController {
         const error = new Error('Contraseña Incorrecta');
         return res.status(401).json({ error: error.message });
       }
-      const token = generateJWT({id: user.id});
+      const token = generateJWT({ id: user.id });
       res.send(token);
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error' });
@@ -49,6 +49,21 @@ export class AuthController {
       req.user.password = hashedNewPassword;
       await req.user.save();
       res.send('Perfil actualizado correctamente');
+
+    } catch (error) {
+      res.status(500).json({ error: 'Hubo un error' });
+    }
+  }
+
+  static confirmPassword = async (req: Request, res: Response) => {
+    try {
+      const { current_password } = req.body;
+      const isCorrectPassword = await checkPassword(current_password, req.user.password);
+      if (!isCorrectPassword) {
+        const error = new Error('La constraseña actual es incorrecta');
+        return res.status(404).json({ error: error.message });
+      }
+      res.status(200).send('Contraseña correcta');
 
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error' });

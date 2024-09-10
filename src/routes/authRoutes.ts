@@ -18,6 +18,13 @@ router.post('/login',
   AuthController.login
 );
 
+router.post('/confirm-password',
+  authenticate,
+  body('current_password').notEmpty().withMessage('La contraseña actual no puede ir vacío'), 
+  handleInputErrors,
+  AuthController.confirmPassword
+)
+
 router.put('/update-profile/:userId', 
   authenticate,
   param('userId').isMongoId().withMessage('ID no valido'),

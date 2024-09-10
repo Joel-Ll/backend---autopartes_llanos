@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Supplier, { ISupplier } from '../models/Supplier';
 import { SortOrder } from 'mongoose';
+import { escapeRegex } from '../helpers';
 
 export class SupplierController {
 
@@ -10,10 +11,12 @@ export class SupplierController {
       let suppliers: ISupplier[];
       const sortCriteria: { [key: string]: SortOrder } = { createdAt: -1 };
       if (term) {
-        const regex = new RegExp(term, 'i');
+        const escapedTerm = escapeRegex(term);
+        const regex = new RegExp(escapedTerm, 'i');
         suppliers = await Supplier.find({
           $or: [
             { name: { $regex: regex } },
+            { email: { $regex: regex } },
           ]
         }).sort(sortCriteria);
       } else {
@@ -37,6 +40,19 @@ export class SupplierController {
       return res.status(200).json(supplier);
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error en el servidor'}); 
+    }
+  }
+
+  static selectedSupplier = async (req: Request, res: Response) => {
+    try {
+      const selectSupplier: ISupplier[] = await Supplier.find({});
+      const suppliers = selectSupplier.map(supplier => {
+        const data = { name: supplier.name }
+        return data;
+      });
+      res.json(suppliers);
+    } catch (error) {
+      res.status(500).json({ error: 'Hubo un error' });
     }
   }
 

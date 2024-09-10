@@ -6,7 +6,7 @@ import { handleInputErrors } from '../middleware/validation';
 
 const router = Router();
 
-router.get('/:term?',
+router.get('/filtered/:term?',
   authenticate,
   handleInputErrors,
   SupplierController.getSuppliers
@@ -17,6 +17,11 @@ router.get('/detail/:id',
   param('id').isMongoId().withMessage('ID no válido'),
   handleInputErrors,
   SupplierController.getSupplier
+);
+
+router.get('/selected', 
+  authenticate,
+  SupplierController.selectedSupplier
 );
 
 router.post('/',

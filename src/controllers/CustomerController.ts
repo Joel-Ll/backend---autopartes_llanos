@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import { SortOrder } from 'mongoose';
 import Customer, { ICustomer } from '../models/Customer';
+import { escapeRegex } from '../helpers';
 
 export class CustomerController {
 
@@ -12,7 +13,8 @@ export class CustomerController {
       const sortCriteria: { [key: string]: SortOrder } = { createdAt: -1 }; // Orden descendente
 
       if (term) {
-        const regex = new RegExp(term, 'i');
+        const escapedTerm = escapeRegex(term);
+        const regex = new RegExp(escapedTerm, 'i');
         customers = await Customer.find({
           $or: [
             { name: { $regex: regex } },
@@ -51,7 +53,7 @@ export class CustomerController {
       const customerExist = await Customer.findOne({ nit_ci });
 
       if (customerExist) {
-        return res.status(409).json({ error: `El cliente con el CI/NIT: ${nit_ci} ya se encuentra registrado` });
+        return res.status(409).json({ error: `El cliente con el CI/NIT: ${nit_ci} ya se encuentra registrado`});
       }
 
       const newCustomer = new Customer({ name, nit_ci, phone, address });

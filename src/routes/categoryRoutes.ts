@@ -8,7 +8,7 @@ import { normalizeName } from "../helpers";
 
 const router = Router();
 
-router.get('/:term?',
+router.get('/filtered/:term?',
   authenticate,
   handleInputErrors,
   CategoryController.getCategories
@@ -20,6 +20,11 @@ router.get('/detail/:id',
   handleInputErrors,
   CategoryController.findOneCategory
 );
+
+router.get('/selected', 
+  authenticate,
+  CategoryController.selectedCategory
+)
 
 router.post('/',
   authenticate,

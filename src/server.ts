@@ -7,6 +7,10 @@ import authRoutes from './routes/authRoutes';
 import customerRoutes from './routes/customerRoutes';
 import categoryRoutes from './routes/categoryRoutes';
 import suppliersRoutes from './routes/supplierRoutes';
+import productsRoutes from './routes/productRoutes';
+import productManagementRoutes from './routes/productManagementRoutes';
+import purchaseHistoryRoutes from './routes/purchaseHistory';
+import saleRoutes from './routes/saleRoutes';
 
 
 dotenv.config();
@@ -21,5 +25,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/categories', categoryRoutes );
 app.use('/api/suppliers',  suppliersRoutes);
+app.use('/api/products', productsRoutes);
+app.use('/api/products-management', productManagementRoutes);
+app.use('/api/purchase-history', purchaseHistoryRoutes);
+app.use('/api/sales', saleRoutes);
 
 export default app;

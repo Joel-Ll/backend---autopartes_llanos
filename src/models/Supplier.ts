@@ -1,10 +1,10 @@
-import mongoose, {Document, Schema} from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface ISupplier extends Document {
   name: string,
   email: string,
   phone: string,
-  address: string
+  address: string,
 }
 
 const supplierSchema: Schema = new Schema({
@@ -30,7 +30,7 @@ const supplierSchema: Schema = new Schema({
     required: true,
     trim: true,
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 const Supplier = mongoose.model<ISupplier>('Supplier', supplierSchema);
 export default Supplier
